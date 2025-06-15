@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validation.UserValidator;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -19,7 +21,7 @@ public class InMemoryUserStorage implements Storage<User> {
 
     @Override
     public User add(User user) {
-        validate(user);
+        UserValidator.validate(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -34,7 +36,7 @@ public class InMemoryUserStorage implements Storage<User> {
         if (!users.containsKey(user.getId())) {
             throw new ValidationException("Пользователь с id=" + user.getId() + " не найден");
         }
-        validate(user);
+        UserValidator.validate(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -48,15 +50,4 @@ public class InMemoryUserStorage implements Storage<User> {
         return new ArrayList<>(users.values());
     }
 
-    private void validate(User u) {
-        if (u.getEmail() == null || !u.getEmail().contains("@")) {
-            throw new ValidationException("Некорректный e-mail: " + u.getEmail());
-        }
-        if (u.getLogin() == null || u.getLogin().isBlank() || u.getLogin().contains(" ")) {
-            throw new ValidationException("Некорректный логин: " + u.getLogin());
-        }
-        if (u.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата рождения не может быть в будущем");
-        }
-    }
 }

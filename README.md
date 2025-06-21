@@ -5,6 +5,8 @@ Template repository for Filmorate project.
 
 ![ER-диаграмма](./db/er-diagram.png)
 
+![ER-диаграмма](db/Untitled.png)
+
 -- Получить всех пользователей
 SELECT * 
 FROM users;

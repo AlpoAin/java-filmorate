@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
+import java.util.Set;
+import java.util.HashSet;
+
+
 /**
  * Модель фильма.
  */
@@ -25,4 +29,11 @@ public class Film {
 
     @Positive(message = "Продолжительность должна быть положительной")
     private long duration;
+
+    @NotBlank(message = "MPA-рейтинг не может быть пустым")
+    private String mpaRating;
+
+    /** Список id жанров */
+    private Set<@Positive Integer> genreIds = new HashSet<>();
+
 }

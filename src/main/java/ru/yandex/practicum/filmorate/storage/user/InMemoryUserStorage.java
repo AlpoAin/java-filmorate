@@ -73,22 +73,40 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(users.values());
     }
 
-    @Override
+    /*@Override
     public void addFriend(int userId, int friendId) {
         User user = getById(userId);
         User friend = getById(friendId);
         friends.get(userId).add(friendId);
         friends.get(friendId).add(userId);
         log.info("Пользователь {} и {} теперь друзья", userId, friendId);
-    }
+    }*/
 
     @Override
+    public void addFriend(int userId, int friendId) {
+        getById(userId);   // проверка, что пользователь существует
+        getById(friendId); // проверка, что друг существует
+        friends.get(userId).add(friendId);
+        log.info("Пользователь {} отправил заявку в друзья к {}", userId, friendId);
+    }
+
+    /*@Override
     public void removeFriend(int userId, int friendId) {
         getById(userId);
         getById(friendId);
         friends.getOrDefault(userId, Collections.emptySet()).remove(friendId);
         friends.getOrDefault(friendId, Collections.emptySet()).remove(userId);
         log.info("Пользователь {} и {} разорвали дружбу", userId, friendId);
+    }*/
+
+    @Override
+    public void removeFriend(int userId, int friendId) {
+        getById(userId);
+        getById(friendId);
+        boolean removed = friends.getOrDefault(userId, Set.of()).remove(friendId);
+        if (removed) {
+            log.info("Пользователь {} отозвал заявку в друзья к {}", userId, friendId);
+        }
     }
 
     @Override

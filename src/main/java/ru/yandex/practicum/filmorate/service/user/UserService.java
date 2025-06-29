@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service.user;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
@@ -9,10 +10,13 @@ import java.util.Collection;
 @Service
 public class UserService {
     private final UserStorage storage;
-
-    public UserService(UserStorage storage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage storage) {
         this.storage = storage;
     }
+
+    /*public UserService(UserStorage storage) {
+        //this.storage = storage;
+    }*/
 
     public User add(User user) {
         return storage.add(user);

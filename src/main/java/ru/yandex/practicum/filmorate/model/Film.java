@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.util.HashSet;
  * Модель фильма.
  */
 @Data
-@NoArgsConstructor
 public class Film {
     private int id;
 
@@ -34,6 +32,17 @@ public class Film {
     private String mpaRating;
 
     /** Список id жанров */
-    private Set<@Positive Integer> genreIds = new HashSet<>();
+    private Set<@Positive Integer> genreIds;
 
+    // Явно пишем конструктор, инициализируем коллекцию
+    public Film() {
+        this.genreIds = new HashSet<>();
+    }
+
+    /**
+     * Перегруженный сеттер для genreIds:
+     * если Jackson или кто-то передаст null — мы всё равно оставим пустой Set*/
+    public void setGenreIds(Set<Integer> genreIds) {
+        this.genreIds = (genreIds != null) ? genreIds : new HashSet<>();
+    }
 }

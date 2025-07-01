@@ -14,10 +14,6 @@ public class UserService {
         this.storage = storage;
     }
 
-    /*public UserService(UserStorage storage) {
-        //this.storage = storage;
-    }*/
-
     public User add(User user) {
         return storage.add(user);
     }

@@ -7,6 +7,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.FilmRowMapper;
+
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -26,16 +28,7 @@ public class FilmDbStorage implements FilmStorage {
      * Маппер базовых полей + mpa_rating.
      * Жанры подтягиваем отдельно в методе fillGenres().
      */
-    private final RowMapper<Film> filmMapper = (rs, rowNum) -> {
-        Film f = new Film();
-        f.setId(rs.getInt("id"));
-        f.setName(rs.getString("name"));
-        f.setDescription(rs.getString("description"));
-        f.setReleaseDate(rs.getDate("release_date").toLocalDate());
-        f.setDuration(rs.getLong("duration"));
-        f.setMpaRating(rs.getString("mpa_rating"));
-        return f;
-    };
+    private final FilmRowMapper filmMapper = new FilmRowMapper();
 
     @Override
     public Film add(Film film) {
